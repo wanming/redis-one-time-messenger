@@ -1,23 +1,31 @@
-import { Redis } from 'ioredis';
+import IORedis = require('ioredis')
 import * as Bluebird from 'bluebird';
 import * as EventEmitter from 'events';
 import isObject = require('lodash.isobject');
 
-export class RedisOneTimeMessage extends EventEmitter {
-  private subClient: Redis;
-  private pubClient: Redis;
+export class RedisOneTimeMessenger extends EventEmitter {
+  private subClient: IORedis.Redis;
+  private pubClient: IORedis.Redis;
   private timeout: number = 30000;
   private pool: { [x: string]: (...p: any[]) => any } = {};
 
   constructor(options: {
-    subClient: Redis;
-    pubClient: Redis;
+    subClient?: IORedis.Redis;
+    pubClient?: IORedis.Redis;
+    redisConfig?: IORedis.RedisOptions;
     timeout?: number;
   }) {
     super();
 
-    this.subClient = options.subClient;
-    this.pubClient = options.pubClient;
+    if (options.redisConfig) {
+      this.subClient = new IORedis(options.redisConfig)
+      this.pubClient = new IORedis(options.redisConfig)
+    } else if (options.subClient && options.pubClient) {
+      this.subClient = options.subClient;
+      this.pubClient = options.pubClient;
+    } else {
+      throw new Error('subClient, pubClient or redisConfig must be provided')
+    }
 
     if (options.timeout) {
       this.timeout = options.timeout;
@@ -37,7 +45,7 @@ export class RedisOneTimeMessage extends EventEmitter {
     try {
       return await promise.timeout(this.timeout);
     } catch (e) {
-      error = new Error('RedisOneTimeMessageTimeoutError');
+      error = new Error('RedisOneTimeMessengerTimeoutError');
     }
 
     delete this.pool[channel];

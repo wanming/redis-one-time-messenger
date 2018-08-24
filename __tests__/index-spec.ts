@@ -1,11 +1,11 @@
-import { RedisOneTimeMessage } from '../src/index';
+import { RedisOneTimeMessenger } from '../src/index';
 import * as Redis from 'ioredis';
 import { delay } from 'bluebird';
 
 const randomString = () => Math.random().toString(36);
 
 test('Should get message correctly', async () => {
-  const otm = new RedisOneTimeMessage({
+  const otm = new RedisOneTimeMessenger({
     subClient: new Redis(),
     pubClient: new Redis(),
   });
@@ -19,7 +19,7 @@ test('Should get message correctly', async () => {
 });
 
 test('Should get object message correctly', async () => {
-  const otm = new RedisOneTimeMessage({
+  const otm = new RedisOneTimeMessenger({
     subClient: new Redis(),
     pubClient: new Redis(),
   });
@@ -33,7 +33,7 @@ test('Should get object message correctly', async () => {
 });
 
 test('Should timeout', async () => {
-  const otm = new RedisOneTimeMessage({
+  const otm = new RedisOneTimeMessenger({
     subClient: new Redis(),
     pubClient: new Redis(),
     timeout: 1000,
@@ -41,6 +41,6 @@ test('Should timeout', async () => {
 
   const channel = randomString();
   await expect(otm.waitForResponse(channel)).rejects.toThrow(
-    /RedisOneTimeMessageTimeoutError/
+    /RedisOneTimeMessengerTimeoutError/
   );
 });

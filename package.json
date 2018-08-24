@@ -1,5 +1,5 @@
 {
-  "name": "redis-one-time-message",
+  "name": "redis-one-time-messenger",
   "version": "0.0.1",
   "description": "redis-one-time-message",
   "license": "MIT",
