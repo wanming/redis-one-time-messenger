@@ -12,7 +12,7 @@ test('Should get message correctly', async () => {
 
   const channel = randomString();
   const promise = otm.waitForResponse(channel);
-  await delay(20);
+  await delay(100);
   otm.publish(channel, 'tomtest');
   const data = await promise;
   expect(data).toEqual('tomtest');
