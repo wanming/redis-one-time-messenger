@@ -1,4 +1,4 @@
-import IORedis = require('ioredis')
+import IORedis = require('ioredis');
 import * as Bluebird from 'bluebird';
 import * as EventEmitter from 'events';
 import isObject = require('lodash.isobject');
@@ -18,13 +18,13 @@ export class RedisOneTimeMessenger extends EventEmitter {
     super();
 
     if (options.redisConfig) {
-      this.subClient = new IORedis(options.redisConfig)
-      this.pubClient = new IORedis(options.redisConfig)
+      this.subClient = new IORedis(options.redisConfig);
+      this.pubClient = new IORedis(options.redisConfig);
     } else if (options.subClient && options.pubClient) {
       this.subClient = options.subClient;
       this.pubClient = options.pubClient;
     } else {
-      throw new Error('subClient, pubClient or redisConfig must be provided')
+      throw new Error('subClient, pubClient or redisConfig must be provided');
     }
 
     if (options.timeout) {
