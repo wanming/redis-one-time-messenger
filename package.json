@@ -26,7 +26,7 @@
     "prebuild": "npm run clean && npm run format && npm run lint && echo Using TypeScript && tsc --version",
     "build": "tsc --pretty",
     "test": "jest --forceExit",
-    "coverage": "jest --coverage",
+    "coverage": "jest --coverage --forceExit",
     "watch": "npm run build -- --watch",
     "watch:test": "jest --watch"
   },
